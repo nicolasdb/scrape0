@@ -1,0 +1,170 @@
+# Example Scraper Configuration
+# This file demonstrates the configuration format for the core scraping module.
+# Copy this to your own config.toml and customize the sites and extraction rules.
+
+# ============================================================================
+# [scraper] section - Global settings for the scraper
+# ============================================================================
+[scraper]
+
+# Primary scraping library to use
+# Supported values: "scrapling"
+# This field is designed for future library swapping capability
+primary_library = "scrapling"
+
+# Default timeout for all HTTP requests (in seconds)
+# Can be overridden at the site level
+timeout_seconds = 30
+
+# Maximum number of automatic retry attempts for transient failures
+# Applied to timeouts, connection errors, and 5xx HTTP errors
+# Does not retry on 4xx errors, validation failures, or parsing errors
+max_retries = 3
+
+# Exponential backoff multiplier for retry delays
+# With factor 2.0: first retry after 1s, second after 2s, third after 4s
+retry_backoff_factor = 2.0
+
+
+# ============================================================================
+# [[sites]] section(s) - Site-specific configurations
+# ============================================================================
+# Multiple sites can be defined by repeating [[sites]] blocks
+# When scraping a URL, the first matching site (by url_pattern) will be used
+
+[[sites]]
+# Unique identifier for this site configuration
+id = "example-fablab"
+
+# URL pattern for matching input URLs (substring matching)
+# When you call scrape_facility() with a URL, we search for a site
+# whose url_pattern appears in the URL. First match wins.
+url_pattern = "example-fablab.com"
+
+# Site type for analytics and categorization
+# Examples: "fablab", "makerspace", "hackerspace", "community-workshop"
+# Used for reliability measurement and pattern analysis in Phase 2+
+site_type = "fablab"
+
+# Human-readable description of this site
+# Useful for documentation and debugging
+description = "Example Fablab facility for testing and development"
+
+# (Optional) Site-specific timeout override
+# If specified, overrides the global timeout_seconds for this site only
+# Useful for sites known to be slow or have strict response time limits
+timeout_seconds = 30
+
+# (Optional) Site-specific max retries override
+# If specified, overrides the global max_retries for this site
+# Useful for unreliable sites that benefit from more retries
+max_retries = 3
+
+
+# ============================================================================
+# [sites.fields.priority] - Core facility fields
+# ============================================================================
+# Priority fields are the 5 core fields most sites have:
+# name, location, expertise, url, contact
+# These fields are attempted for all sites
+[sites.fields.priority]
+
+# Facility/venue name
+# Extraction rule format can be:
+#   - CSS selector (default): "h1.name", "div#title", "span.facility-name"
+#   - XPath (starts with //): "//h1[@class='name']", "//div[@id='title']"
+#   - Regex (delimited with /): "/[A-Z][a-z]+ [A-Z][a-z]+/"
+name = "h1.name"
+
+# Geographic location
+location = "span.location"
+
+# Areas of expertise or equipment/services available
+expertise = "div.expertise"
+
+# Website or external URL for the facility
+# If extracting href attribute, CSS selector will get text content automatically
+url = "a.website"
+
+# Contact information (email, phone, or contact form URL)
+contact = "span.contact"
+
+
+# ============================================================================
+# [sites.fields.extra] - Additional/optional fields
+# ============================================================================
+# Extra fields are optional and site-specific
+# They're extracted alongside priority fields but don't affect success determination
+# If a site doesn't have these fields, extraction continues without error
+[sites.fields.extra]
+
+# Operating hours information
+operating_hours = "div.hours"
+
+# List of available equipment
+equipment = "ul.equipment li"
+
+# Phone number for direct contact
+phone = "span.phone"
+
+# Any other site-specific information
+# You can add as many extra fields as needed
+
+
+# ============================================================================
+# Example: Second site with different extraction rules
+# ============================================================================
+[[sites]]
+id = "tech-makerspace"
+url_pattern = "techspace.example.com"
+site_type = "makerspace"
+description = "Tech-focused makerspace with different HTML structure"
+
+# Different sites may have different CSS structures
+# Adjust selectors to match each site's actual HTML
+[sites.fields.priority]
+name = ".facility-title"
+location = ".location-text"
+expertise = ".skills"
+url = "a.external-link"
+contact = ".contact-email"
+
+[sites.fields.extra]
+membership_cost = ".price-info"
+workshop_schedule = ".calendar"
+# Add more extra fields as discovered during implementation
+
+
+# ============================================================================
+# [output] section - Output formatting and file handling
+# ============================================================================
+[output]
+
+# Output format (currently only "toml" supported)
+# Other formats (JSON, CSV, etc.) deferred to future phases
+format = "toml"
+
+# Include metadata section in output files?
+# Metadata includes success flag, timestamps, failure reasons, field status
+include_metadata = true
+
+# Default output directory for TOML files
+# Relative paths are relative to where the script is run from
+directory = "./output"
+
+
+# ============================================================================
+# CONFIGURATION EVOLUTION NOTES
+# ============================================================================
+# This configuration schema is designed to evolve during implementation:
+#
+# 1. Add new sites by creating new [[sites]] blocks
+# 2. Add new extra fields to [sites.fields.extra] without code changes
+# 3. Modify extraction rules by changing the selector/pattern values
+# 4. Site-specific overrides (timeout_seconds, max_retries) allow tuning
+#
+# As you discover new extraction patterns, add them as extra fields first
+# to test the extraction logic without modifying code. Once proven, they
+# can be promoted to priority fields if widely applicable.
+#
+# See CONFIG_EVOLUTION.md for history of schema changes and rationale.

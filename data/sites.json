@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "sites": [
+    {
+      "id": "example",
+      "url": "https://example.com",
+      "site_type": "blog",
+      "description": "Example Blog",
+      "frequency": "daily",
+      "active": true,
+      "created_date": "2026-01-04T13:22:45.080546+00:00",
+      "last_scraped": null,
+      "config_path": null
+    },
+    {
+      "id": "test-makerspace",
+      "url": "https://test-makerspace.org",
+      "site_type": "makerspace",
+      "description": "Test Makerspace",
+      "frequency": "weekly",
+      "active": true,
+      "created_date": "2026-01-04T13:22:45.092012+00:00",
+      "last_scraped": null,
+      "config_path": null
+    },
+    {
+      "id": "demo",
+      "url": "https://demo.fablab.net",
+      "site_type": "fablab",
+      "description": "Demo FabLab",
+      "frequency": "monthly",
+      "active": true,
+      "created_date": "2026-01-04T13:22:45.112882+00:00",
+      "last_scraped": null,
+      "config_path": null
+    }
+  ]
+}

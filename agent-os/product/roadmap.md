@@ -2,11 +2,11 @@
 
 ## Phase 1: Core Scraping & Profiling
 
-1. [ ] **Scrapling Integration & Configuration** — Integrate Scrapling as the primary scraping engine and build a configuration system to define target websites, extraction patterns, and retry logic. `M`
+1. [x] **Scrapling Integration & Configuration** — Integrate Scrapling as the primary scraping engine and build a configuration system to define target websites, extraction patterns, and retry logic. `M`
 
-2. [ ] **Priority Data Extraction Pipeline** — Implement automated extraction of core fields (name, location, expertise, URL, contact) from target fablabs/makerspaces with error handling and field validation. `M`
+2. [x] **Priority Data Extraction Pipeline** — Implement automated extraction of core fields (name, location, expertise, URL, contact) from target fablabs/makerspaces with error handling and field validation. `M`
 
-3. [ ] **TOML Profile Output** — Generate structured TOML files for each scraped facility containing priority data, timestamps, and metadata about the scraping process. `S`
+3. [x] **TOML Profile Output** — Generate structured TOML files for each scraped facility containing priority data, timestamps, and metadata about the scraping process. `S`
 
 4. [ ] **Basic Scheduling & Orchestration** — Implement scheduled scraping runs (daily/weekly/monthly) to keep profiles current without manual intervention. `M`
 
